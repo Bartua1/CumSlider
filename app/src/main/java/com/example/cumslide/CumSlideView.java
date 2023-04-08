@@ -4,26 +4,31 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class CumSlideView extends View {
     private CumSlide cumSlide;
+
+    public static List<Pair> screenPositions = new ArrayList<Pair>();
     private Paint paint;
     private int blockWidth, blockHeight;
     private int screenWidth, screenHeight;
     private int numRows, numCols;
     private int playerRow, playerCol;
-    private Jugador player;
+    private MainActivity mainActivity;
 
     public CumSlideView(Context context, AttributeSet attr) {
         super(context, attr);
+        mainActivity = (MainActivity) context;
         cumSlide = new CumSlide(20);
-        player = new Jugador();
         numRows = cumSlide.matrix.size();
         numCols = cumSlide.matrix.get(0).size();
         paint = new Paint();
@@ -44,12 +49,11 @@ public class CumSlideView extends View {
             System.out.println(a);
         }
         super.onDraw(canvas);
-
         canvas.drawColor(Color.WHITE);
         // Define the paint for the lines
         Paint linePaint = new Paint();
-        linePaint.setColor(Color.MAGENTA);
-        linePaint.setStrokeWidth(5);
+        linePaint.setColor(Color.argb(255, 155, 184, 145));
+        linePaint.setStrokeWidth(50);
 
         // Define the paint for the bridges
         Paint bridgePaint = new Paint();
@@ -78,42 +82,27 @@ public class CumSlideView extends View {
         // Draw the oblique line between the two cells
         int maxKey = Collections.max(cumSlide.positions.keySet());
 
-        for (Cuarteto c : cumSlide.positions.values()){
-            Float startingX = Float.valueOf(c.getAx()*columnWidth+columnWidth/2);
-            Float startingY = Float.valueOf(c.getAy()*rowWidth);
-            Float stoppingX = Float.valueOf((c.getBx()*columnWidth+columnWidth/2));
-            Float stoppingY = Float.valueOf(c.getBy()*rowWidth);
+        System.out.println("Numero de puentes " + cumSlide.positions.values().size());
+        System.out.println("==============================");
+        System.out.println(cumSlide.positions);
+        System.out.print("==============================");
+        for (Bridge c : cumSlide.positions.values()) {
+            //System.out.println(c.getSourceX() + " - " + c.getSourceY());
+            //System.out.println(c.getTargetX() + " - " + c.getTargetY());
+            Float startingX = Float.valueOf(c.getSourceX()*columnWidth+columnWidth/2);
+            Float startingY = Float.valueOf(c.getSourceY()*rowWidth);
+            Float stoppingX = Float.valueOf((c.getTargetX()*columnWidth+columnWidth/2));
+            Float stoppingY = Float.valueOf(c.getTargetY()*rowWidth);
             canvas.drawLine(startingX, startingY, stoppingX, stoppingY, linePaint);
         }
-    }
+        int dpHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 115, getResources().getDisplayMetrics());
 
-    public void movePlayer(int dx, int dy) {
-        Integer xpos = player.getX();
-        Integer ypos = player.getY();
-        Integer pos = cumSlide.matrix.get(xpos).get(ypos);
-        if (pos!=0 && !player.getMov()){
-            player.setMovimiento(Boolean.TRUE);
-            player.setCuarteto(cumSlide.positions.get(pos), new Pair(xpos, ypos));
+        for (int i = 0; i < cumSlide.matrix.size(); i++) {
+            for (int j = 0; j < cumSlide.matrix.get(i).size(); j++) {
+                screenPositions.add(new Pair(j*columnWidth+columnWidth/2, i*rowWidth - dpHeight));
+            }
         }
-        else{
-            if (xpos == player.posicionFinal.getX() && ypos == player.posicionFinal.getY() && player.getMov()==Boolean.TRUE) {
-                player.setMovimiento(Boolean.FALSE);
-            }
-            else{
-                player.setCuarteto(new Cuarteto(0,0,0,0), new Pair(0,0));
-            }
 
-        }
-        player.setY(player.getY()+1);
     }
-//
-//    public void reset() {
-//        cumSlide = new CumSlide(20);
-//        numRows = cumSlide.matrix.size();
-//        numCols = cumSlide.matrix.get(0).size();
-//        playerRow = 0;
-//        playerCol = 0;
-//        invalidate();
-//    }
 }
 

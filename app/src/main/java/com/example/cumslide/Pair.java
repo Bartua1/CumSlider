@@ -59,6 +59,10 @@ public class Pair {
                 y == pair.y;
     }
 
+    public double getDistance(Pair p){
+        return Math.sqrt(Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2));
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(x, y);

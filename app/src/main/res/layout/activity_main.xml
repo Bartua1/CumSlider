@@ -1,12 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frame_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/frame_layout">
+    android:layout_height="match_parent">
 
     <com.example.cumslide.CumSlideView
         android:id="@+id/cumslide_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="100dp"
+        android:layout_height="65dp"
+        android:layout_gravity="top|left"
+        android:layout_margin="16dp"
+        android:text="Score: 0" />
+
+    <ImageView
+        android:id="@+id/mario"
+        android:layout_width="65dp"
+        android:layout_height="95dp"
+        android:src="@drawable/mario" />
+
+    <ImageView
+        android:id="@+id/star"
+        android:layout_width="85dp"
+        android:layout_height="115dp"
+        android:src="@drawable/star"
+        android:translationX="185dp"
+        android:translationY="630dp" />
+
+    <ImageView
+        android:id="@+id/plant1"
+        android:layout_width="85dp"
+        android:layout_height="115dp"
+        android:src="@drawable/plant"
+        android:translationX="5dp"
+        android:translationY="630dp" />
+
+    <ImageView
+        android:id="@+id/plant2"
+        android:layout_width="85dp"
+        android:layout_height="115dp"
+        android:src="@drawable/plant"
+        android:translationX="90dp"
+        android:translationY="630dp" />
+
+    <ImageView
+        android:id="@+id/plant3"
+        android:layout_width="85dp"
+        android:layout_height="115dp"
+        android:src="@drawable/plant"
+        android:translationX="275dp"
+        android:translationY="630dp" />
 
 </FrameLayout>
